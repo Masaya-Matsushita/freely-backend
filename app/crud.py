@@ -27,6 +27,10 @@ def create_plan(db: Session, plan: schemas.Plan):
     db.add(db_plan)
     db.commit()
     db.refresh(db_plan)
+    return db_plan
+
+# TODO: 各データ追加処理において主キーは指定すべきか
+# NOTE: 指定しない場合、連番が自動で割り振られた
 
 # スポット登録
 def create_spot(db: Session, spot: schemas.Spot):
@@ -42,6 +46,7 @@ def create_spot(db: Session, spot: schemas.Spot):
     db.add(db_spot)
     db.commit()
     db.refresh(db_spot)
+    return db_spot
 
 # メモ登録
 def create_memo(db: Session, memo: schemas.Memo):
@@ -53,3 +58,4 @@ def create_memo(db: Session, memo: schemas.Memo):
     db.add(db_memo)
     db.commit()
     db.refresh(db_memo)
+    return db_memo

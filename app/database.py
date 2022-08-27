@@ -16,16 +16,20 @@ DB_NAME = os.environ['DB_NAME']
 
 DATABASE_URL = '{}://{}:{}@{}:{}/{}'.format(DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME)
 
-# SQLAlchemyからHeroku Postgresへアクセスするための処理
+# NOTE: AttributeError: 'NoneType' object has no attribute 'startswith'
+# NOTE: 一旦SQLAlchemyをv1.3.9へダウンすることで対応
+# TODO: v1.4.40(現在)までバージョンアップしたい
+# SQLAlchemy(1.4.x以降)からHeroku Postgresへアクセスするための処理
 # https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
-uri = os.getenv(DATABASE_URL)
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+# REPLACED_URL = os.getenv(DATABASE_URL)
+# if REPLACED_URL.startswith("postgres://"):
+#     REPLACED_URL = REPLACED_URL.replace("postgres://", "postgresql://", 1)
 
-# charsetの設定など
-engine = create_engine(uri)
+# TODO: charsetの設定など
+engine = create_engine(DATABASE_URL)
 
-# autocommit, autoflushに何を設定すべきか
+# TODO: autocommit, autoflushに何を設定すべきか
+# TODO: scoped_session()を使用すべき？
 session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # 継承してModelを作成するためのインスタンス
