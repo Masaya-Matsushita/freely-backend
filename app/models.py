@@ -3,6 +3,7 @@ from .database import Base
 
 
 # TODO: ソルトはどこに保存すべきか
+# TODO: 楽観的排他制御すべき？
 
 class Plan(Base):
     __tablename__ = 'plans'

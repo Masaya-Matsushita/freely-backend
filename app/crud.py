@@ -30,6 +30,7 @@ def create_plan(db: Session, plan: schemas.Plan):
     return db_plan
 
 # TODO: 各データ追加処理において主キーは指定すべきか
+# NOTE: フロントから自動生成した一意の値を渡す？
 # NOTE: 指定しない場合、連番が自動で割り振られた
 
 # スポット登録
