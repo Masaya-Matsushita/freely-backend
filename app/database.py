@@ -7,7 +7,9 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-DATABASE = 'postgres'
+# SQLAlchemy(1.4.x以降)からHeroku Postgresへアクセスするため、postgres -> postgresql
+# https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
+DATABASE = 'postgresql'
 USER = os.environ['DB_USER']
 PASSWORD = os.environ['DB_PASSWORD']
 HOST = os.environ['DB_HOST']
@@ -15,15 +17,6 @@ PORT = os.environ['DB_PORT']
 DB_NAME = os.environ['DB_NAME']
 
 DATABASE_URL = '{}://{}:{}@{}:{}/{}'.format(DATABASE, USER, PASSWORD, HOST, PORT, DB_NAME)
-
-# NOTE: AttributeError: 'NoneType' object has no attribute 'startswith'
-# NOTE: 一旦SQLAlchemyをv1.3.9へダウンすることで対応
-# TODO: v1.4.40(現在)までバージョンアップしたい
-# SQLAlchemy(1.4.x以降)からHeroku Postgresへアクセスするための処理
-# https://help.heroku.com/ZKNTJQSK/why-is-sqlalchemy-1-4-x-not-connecting-to-heroku-postgres
-# REPLACED_URL = os.getenv(DATABASE_URL)
-# if REPLACED_URL.startswith("postgres://"):
-#     REPLACED_URL = REPLACED_URL.replace("postgres://", "postgresql://", 1)
 
 # TODO: charsetの設定など
 engine = create_engine(DATABASE_URL)
