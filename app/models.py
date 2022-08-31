@@ -1,10 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Date
 from .database import Base
 
-
-# TODO: ソルトはどこに保存すべきか
-# TODO: 楽観的排他制御すべき？
-
 class Plan(Base):
     __tablename__ = 'plans'
     plan_id = Column(String, primary_key=True, index=True)
@@ -20,7 +16,7 @@ class Spot(Base):
     __tablename__ = 'spots'
     spot_id = Column(Integer, primary_key=True, index=True)
     # TODO: ondeleteの指定、CASCADEとは
-    plan_id = Column(String, ForeignKey('plans.plan_id', ondelete='SET NULL'), nullable=True)
+    plan_id = Column(String, ForeignKey('plans.plan_id', ondelete='CASCADE'))
     spot_name = Column(String, nullable=False)
     image = Column(String)
     url = Column(String)
@@ -32,6 +28,6 @@ class Spot(Base):
 class Memo(Base):
     __tablename__ = 'memos'
     memo_id = Column(Integer, primary_key=True, index=True)
-    spot_id = Column(String, ForeignKey('spots.spot_id', ondelete='SET NULL'), nullable=True)
+    spot_id = Column(String, ForeignKey('spots.spot_id', ondelete='CASCADE'))
     text = Column(String, nullable=False)
     marked = Column(String, nullable=False)

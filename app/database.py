@@ -21,7 +21,6 @@ DATABASE_URL = '{}://{}:{}@{}:{}/{}'.format(DATABASE, USER, PASSWORD, HOST, PORT
 # TODO: charsetの設定など
 engine = create_engine(DATABASE_URL)
 
-# TODO: autocommit, autoflushに何を設定すべきか
 # TODO: scoped_session()を使用すべき？
 session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -14,6 +14,7 @@ def get_memos(db: Session):
     return db.query(models.Memo).all()
 
 # プラン登録
+# idはサーバー側
 def create_plan(db: Session, plan: schemas.Plan):
     db_plan = models.Plan(
         plan_id = plan.plan_id,
@@ -28,10 +29,6 @@ def create_plan(db: Session, plan: schemas.Plan):
     db.commit()
     db.refresh(db_plan)
     return db_plan
-
-# TODO: 各データ追加処理において主キーは指定すべきか
-# NOTE: フロントから自動生成した一意の値を渡す？
-# NOTE: 指定しない場合、連番が自動で割り振られた
 
 # スポット登録
 def create_spot(db: Session, spot: schemas.Spot):
