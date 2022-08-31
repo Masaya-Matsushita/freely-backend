@@ -2,15 +2,15 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 # プラン一覧取得
-def get_plans(db: Session):
+def get_plan(db: Session):
     return db.query(models.Plan).all()
 
 # スポット一覧取得
-def get_spots(db: Session):
+def get_spot(db: Session):
     return db.query(models.Spot).all()
 
 # メモ一覧取得
-def get_memos(db: Session):
+def get_memo(db: Session):
     return db.query(models.Memo).all()
 
 # プラン登録
