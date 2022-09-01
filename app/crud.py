@@ -1,7 +1,10 @@
+import os
+import hashlib
 from sqlalchemy.orm import Session
 from . import models, schemas
+from dotenv import load_dotenv
 
-# パスワードの一致を確認
+load_dotenv()
 
 # プラン一覧取得
 def get_plans(db: Session, planId: str):
@@ -18,7 +21,9 @@ def get_memos(db: Session):
 # パスワード認証
 def auth_user(db: Session, auth: schemas.Auth):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==auth.plan_id).all()[0]
-    if plan.verify_key == auth.password:
+    key = auth.password + os.environ['SALT']
+    hash_key = hashlib.sha256(key.encode()).hexdigest()
+    if plan.verify_key == hash_key:
         return True
     else:
         return False
