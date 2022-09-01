@@ -47,8 +47,8 @@ async def get_memos(spot_id: int = 0, db: Session = Depends(get_db)):
 async def create_plan(plan: schemas.PlanReqPost, db: Session = Depends(get_db)):
     return crud.create_plan(db=db, plan=plan)
 
-@app.post("/spot", response_model=Union[schemas.SpotRes,  Literal[False]])
-async def create_spot(spot: schemas.SpotReq, db: Session = Depends(get_db)):
+@app.post("/spot", response_model=bool)
+async def create_spot(spot: schemas.SpotReqPost, db: Session = Depends(get_db)):
     return crud.create_spot(db=db, spot=spot)
 
 @app.post("/memo", response_model=Union[schemas.MemoRes,  Literal[False]])

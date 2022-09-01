@@ -59,30 +59,65 @@ class PlanReqDelete(BaseModel):
 
 
 
-class SpotReq(BaseModel):
-    password: str
-    spot_id: int
+# スポットGET時
+class SpotResGet(BaseModel):
     plan_id: str
+    spot_id: int
     spot_name: str = Field(max_length=40)
-    image: str
-    url: str
+    image: str #空文字の可能性あり
+    icon: int #0の可能性あり
+    url: str #空文字の可能性あり
     priority: bool
     visited: bool
-    icon: int
-
-
-class SpotRes(BaseModel):
-    spot_id: int
-    plan_id: str
-    spot_name: str = Field(max_length=40)
-    image: str
-    url: str
-    priority: bool
-    visited: bool
-    icon: int
 
     class Config:
         orm_mode = True
+
+
+# スポット作成
+class SpotReqPost(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    spot_name: str = Field(max_length=40)
+    image: str #空文字の可能性あり
+    icon: int #0の可能性あり
+    url: str #空文字の可能性あり
+
+
+# スポット更新
+class SpotReqPutBody(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    spot_name: str = Field(max_length=40)
+    image: str #空文字の可能性あり
+    icon: int #0の可能性あり
+    url: str #空文字の可能性あり
+
+# Priority更新
+# TODO: swrの挙動次第ではresponseすべきかも
+class SpotReqPutPriority(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    priority: bool
+
+# visited更新
+# TODO: swrの挙動次第ではresponseすべきかも
+class SpotReqPutVisited(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    visited: bool
+
+
+# スポット削除
+class SpotReqDelete(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+
 
 
 class MemoReq(BaseModel):

@@ -72,22 +72,22 @@ def create_plan(db: Session, plan: schemas.PlanReqPost):
     return { 'plan_id' : db_plan.plan_id }
 
 # スポット登録
-def create_spot(db: Session, spot: schemas.SpotReq):
+def create_spot(db: Session, spot: schemas.SpotReqPost):
     isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
     if isAuth:
         db_spot = models.Spot(
             plan_id = spot.plan_id,
             spot_name = spot.spot_name,
             image = spot.image,
+            icon = spot.icon,
             url =  spot.url,
-            priority = spot.priority,
-            visited = spot.visited,
-            icon = spot.icon
+            priority = False,
+            visited = False,
         )
         db.add(db_spot)
         db.commit()
         db.refresh(db_spot)
-        return db_spot
+        return True
     return False
 
 # メモ登録
