@@ -25,13 +25,13 @@ def read_root():
 
 # Read
 @app.get("/plan", response_model=schemas.Plan)
-async def read_plans(planId: str = 'default', db: Session = Depends(get_db)):
-    plan = crud.get_plans(db=db, planId=planId)
+async def read_plans(plan_id: str = 'default', db: Session = Depends(get_db)):
+    plan = crud.get_plans(db=db, plan_id=plan_id)
     return plan
 
 @app.get("/spot", response_model=List[schemas.Spot])
-async def read_spots(planId: str = 'default' ,db: Session = Depends(get_db)):
-    spots = crud.get_spots(db=db, planId=planId)
+async def read_spots(plan_id: str = 'default' ,db: Session = Depends(get_db)):
+    spots = crud.get_spots(db=db, plan_id=plan_id)
     return spots
 
 @app.get("/memo", response_model=schemas.Memo)

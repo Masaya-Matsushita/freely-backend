@@ -7,12 +7,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # プラン一覧取得
-def get_plans(db: Session, planId: str):
-    return db.query(models.Plan).filter(models.Plan.plan_id==planId).all()[0]
+def get_plans(db: Session, plan_id: str):
+    return db.query(models.Plan).filter(models.Plan.plan_id==plan_id).all()[0]
 
 # スポット一覧取得
-def get_spots(db: Session, planId: str):
-    return db.query(models.Spot).filter(models.Spot.plan_id==planId).all()
+def get_spots(db: Session, plan_id: str):
+    return db.query(models.Spot).filter(models.Spot.plan_id==plan_id).all()
 
 # メモ一覧取得
 def get_memos(db: Session):
