@@ -4,6 +4,10 @@ from pydantic import BaseModel, Field
 
 # TODO: 型をもっと指定する(Optional, email, url, literalTypesなど)
 
+class Auth(BaseModel):
+    plan_id: str
+    password: str
+
 class Plan(BaseModel):
     plan_id: str
     plan_name: str = Field(max_length=40)

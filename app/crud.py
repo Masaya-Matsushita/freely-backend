@@ -11,17 +11,17 @@ def get_plans(db: Session, planId: str):
 def get_spots(db: Session, planId: str):
     return db.query(models.Spot).filter(models.Spot.plan_id==planId).all()
 
-# パスワード認証
-def get_auth(db: Session, planId: str, password: str):
-    plan = db.query(models.Plan).filter(models.Plan.plan_id==planId).all()[0]
-    if plan.verify_key == password:
-        return True
-    else:
-        return False
-
 # メモ一覧取得
 def get_memos(db: Session):
     return db.query(models.Memo).all()
+
+# パスワード認証
+def auth_user(db: Session, auth: schemas.Auth):
+    plan = db.query(models.Plan).filter(models.Plan.plan_id==auth.plan_id).all()[0]
+    if plan.verify_key == auth.password:
+        return True
+    else:
+        return False
 
 # プラン登録
 # idはサーバー側

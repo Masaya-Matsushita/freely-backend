@@ -34,12 +34,6 @@ async def read_spots(planId: str = 'default' ,db: Session = Depends(get_db)):
     spots = crud.get_spots(db=db, planId=planId)
     return spots
 
-# TODO: POSTメソッドに変更する
-@app.get("/auth", response_model=bool)
-async def read_auth(planId: str = 'default', password: str = 'default', db: Session = Depends(get_db)):
-    result = crud.get_auth(db=db, planId=planId, password=password)
-    return result
-
 @app.get("/memo", response_model=schemas.Memo)
 async def read_memos(db: Session = Depends(get_db)):
     memos = crud.get_memos(db)
@@ -47,6 +41,11 @@ async def read_memos(db: Session = Depends(get_db)):
 
 
 # Create
+@app.post("/auth", response_model=bool)
+async def auth_user(auth: schemas.Auth, db: Session = Depends(get_db)):
+    is_auth = crud.auth_user(db=db, auth=auth)
+    return is_auth
+
 @app.post("/plan", response_model=schemas.Plan)
 async def create_plan(plan: schemas.Plan, db: Session = Depends(get_db)):
     new_plan = crud.create_plan(db=db, plan=plan)
