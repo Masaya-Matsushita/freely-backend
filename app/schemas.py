@@ -6,6 +6,17 @@ from pydantic import BaseModel, Field
 
 # TODO: クラスは別々で指定すべきか、Optionalを使用して1つにまとめるべきか
 
+
+# 履歴GET時(≠プラン)
+class PlanResHistory(BaseModel):
+    plan_name: str = Field(max_length=40)
+    start_date: datetime.date
+    end_date: datetime.date
+    timestamp: datetime.date
+
+    class Config:
+        orm_mode = True
+
 # プランGET時
 class PlanResGet(BaseModel):
     plan_name: str = Field(max_length=40)
@@ -22,12 +33,11 @@ class PlanReqPost(BaseModel):
     plan_name: str = Field(max_length=40)
     start_date: datetime.date
     end_date: datetime.date
-    email: str #空文字の可能性
+    email: str #空文字の可能性あり
     timestamp: datetime.date  # TODO: timestampサーバー側で管理すべきかも
 
 class PlanResPost(BaseModel):
     plan_id: str
-    timestamp: datetime.date
 
     class Config:
         orm_mode = True
@@ -40,12 +50,6 @@ class PlanReqPut(BaseModel):
     start_date: datetime.date
     end_date: datetime.date
     timestamp: datetime.date # TODO: timestampサーバー側で管理すべきかも
-
-class PlanResPut(BaseModel):
-    timestamp: datetime.date
-
-    class Config:
-        orm_mode = True
 
 
 # プラン削除

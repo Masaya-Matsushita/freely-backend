@@ -1,6 +1,6 @@
 import os
-import uuid
 import hashlib
+import uuid
 from sqlalchemy.orm import Session
 from . import models, schemas
 from dotenv import load_dotenv
@@ -24,6 +24,17 @@ def auth_user(db: Session, plan_id: str, password: str):
     else:
         return False
 
+
+# 履歴取得
+# TODO: plan_idが配列の場合に対応する
+def get_history(db: Session, plan_id: str):
+    plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).all()[0]
+    return {
+        'plan_name': plan.plan_name,
+        'start_date': plan.start_date,
+        'end_date': plan.end_date,
+        'timestamp': plan.timestamp,
+    }
 
 # プラン取得
 def get_plan(db: Session, plan_id: str):
@@ -58,10 +69,7 @@ def create_plan(db: Session, plan: schemas.PlanReqPost):
     db.add(db_plan)
     db.commit()
     db.refresh(db_plan)
-    return {
-        'plan_id': db_plan.plan_id,
-        'timestamp': db_plan.timestamp
-    }
+    return { 'plan_id' : db_plan.plan_id }
 
 # スポット登録
 def create_spot(db: Session, spot: schemas.SpotReq):

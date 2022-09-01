@@ -25,11 +25,15 @@ def read_root():
 
 
 # GET
+@app.get("/history", response_model=schemas.PlanResHistory)
+async def get_history(plan_id: str = 'default', db: Session = Depends(get_db)):
+    return crud.get_history(db=db, plan_id=plan_id)
+
 @app.get("/plan", response_model=schemas.PlanResGet)
 async def get_plan(plan_id: str = 'default', db: Session = Depends(get_db)):
     return crud.get_plan(db=db, plan_id=plan_id)
 
-@app.get("/spot", response_model=List[schemas.SpotRes])
+@app.get("/spot", response_model=List[schemas.SpotResGet])
 async def get_spots(plan_id: str = 'default', db: Session = Depends(get_db)):
     return crud.get_spots(db=db, plan_id=plan_id)
 
