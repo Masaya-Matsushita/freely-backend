@@ -25,6 +25,20 @@ def auth_user(db: Session, plan_id: str, password: str):
         return False
 
 
+# テスト用
+def get_plan_test(db: Session):
+    plans = db.query(models.Plan).all()
+    return plans
+
+def get_spot_test(db: Session):
+    spots = db.query(models.Spot).all()
+    return spots
+
+def get_memo_test(db: Session):
+    memos = db.query(models.Memo).all()
+    return memos
+
+
 # 履歴取得
 # TODO: plan_idが配列の場合に対応する
 def get_history(db: Session, plan_id: str):

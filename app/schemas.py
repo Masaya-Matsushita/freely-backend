@@ -8,6 +8,44 @@ from pydantic import BaseModel, Field
 # TODO: クラスは別々で指定すべきか、Optionalを使用して1つにまとめるべきか
 
 
+# テスト用
+class PlanTest(BaseModel):
+    plan_id: str
+    plan_name: str = Field(max_length=40)
+    start_date: datetime.date
+    end_date: datetime.date
+    verify_key: str
+    email: str
+    timestamp: datetime.date
+
+    class Config:
+        orm_mode = True
+
+
+class SpotTest(BaseModel):
+    plan_id: str
+    spot_id: int
+    spot_name: str = Field(max_length=40)
+    image: str
+    icon: int
+    url: str
+    priority: bool
+    visited: bool
+
+    class Config:
+        orm_mode = True
+
+
+class MemoTest(BaseModel):
+    spot_id: int
+    memo_id: int
+    text: str = Field(max_length=150)
+    marked: str
+
+    class Config:
+        orm_mode = True
+
+
 # 履歴GET時(≠プラン)
 class PlanResHistory(BaseModel):
     plan_name: str = Field(max_length=40)
