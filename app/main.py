@@ -25,34 +25,28 @@ def read_root():
 
 
 # GET
-@app.get("/plan", response_model=schemas.PlanRes)
+@app.get("/plan", response_model=schemas.PlanResGet)
 async def get_plan(plan_id: str = 'default', db: Session = Depends(get_db)):
-    plan = crud.get_plan(db=db, plan_id=plan_id)
-    return plan
+    return crud.get_plan(db=db, plan_id=plan_id)
 
 @app.get("/spot", response_model=List[schemas.SpotRes])
 async def get_spots(plan_id: str = 'default', db: Session = Depends(get_db)):
-    spots = crud.get_spots(db=db, plan_id=plan_id)
-    return spots
+    return crud.get_spots(db=db, plan_id=plan_id)
 
 @app.get("/memo", response_model=List[schemas.MemoRes])
 async def get_memos(spot_id: int = 0, db: Session = Depends(get_db)):
-    memos = crud.get_memos(db=db, spot_id=spot_id)
-    return memos
+    return crud.get_memos(db=db, spot_id=spot_id)
 
 
 # POST
-@app.post("/plan", response_model=Union[schemas.PlanRes,  Literal[False]])
-async def create_plan(plan: schemas.PlanReq, db: Session = Depends(get_db)):
-    new_plan = crud.create_plan(db=db, plan=plan)
-    return new_plan
+@app.post("/plan", response_model=schemas.PlanResPost)
+async def create_plan(plan: schemas.PlanReqPost, db: Session = Depends(get_db)):
+    return crud.create_plan(db=db, plan=plan)
 
 @app.post("/spot", response_model=Union[schemas.SpotRes,  Literal[False]])
 async def create_spot(spot: schemas.SpotReq, db: Session = Depends(get_db)):
-    new_spot = crud.create_spot(db=db, spot=spot)
-    return new_spot
+    return crud.create_spot(db=db, spot=spot)
 
 @app.post("/memo", response_model=Union[schemas.MemoRes,  Literal[False]])
 async def create_memo(memo: schemas.MemoReq, db: Session = Depends(get_db)):
-    new_memo = crud.create_memo(db=db, memo=memo)
-    return new_memo
+    return crud.create_memo(db=db, memo=memo)
