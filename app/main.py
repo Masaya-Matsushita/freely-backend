@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from . import crud, models, schemas
@@ -23,20 +24,20 @@ def read_root():
     return {"message": "HelloWorld"}
 
 # Read
-@app.get("/plan", response_model=schemas.Plan)
-async def read_plan(db: Session = Depends(get_db)):
-    plan = crud.get_plan(db)
-    return plan
+@app.get("/plan", response_model=List[schemas.Plan])
+async def read_plans(planId: str = 'default', db: Session = Depends(get_db)):
+    plans = crud.get_plans(db=db, planId=planId)
+    return plans
 
-@app.get("/spot", response_model=schemas.Spot)
-async def read_spot(db: Session = Depends(get_db)):
-    spot = crud.get_spot(db)
-    return spot
+@app.get("/spot", response_model=List[schemas.Spot])
+async def read_spots(planId: str = 'default' ,db: Session = Depends(get_db)):
+    spots = crud.get_spots(db=db, planId=planId)
+    return spots
 
 @app.get("/memo", response_model=schemas.Memo)
-async def read_memo(db: Session = Depends(get_db)):
-    memo = crud.get_memo(db)
-    return memo
+async def read_memos(db: Session = Depends(get_db)):
+    memos = crud.get_memos(db)
+    return memos
 
 
 # Create

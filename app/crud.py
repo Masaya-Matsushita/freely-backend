@@ -1,16 +1,19 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 
+# パスワードの一致を確認
+
 # プラン一覧取得
-def get_plan(db: Session):
-    return db.query(models.Plan).all()
+def get_plans(db: Session, planId: str):
+    return db.query(models.Plan).filter(models.Plan.plan_id==planId).all()
+
 
 # スポット一覧取得
-def get_spot(db: Session):
-    return db.query(models.Spot).all()
+def get_spots(db: Session, planId: str):
+    return db.query(models.Spot).filter(models.Spot.plan_id==planId).all()
 
 # メモ一覧取得
-def get_memo(db: Session):
+def get_memos(db: Session):
     return db.query(models.Memo).all()
 
 # プラン登録
