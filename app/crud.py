@@ -91,7 +91,7 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
     return False
 
 # メモ登録
-def create_memo(db: Session, memo: schemas.MemoReq):
+def create_memo(db: Session, memo: schemas.MemoReqPost):
     isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
     if isAuth:
         db_memo = models.Memo(
@@ -102,5 +102,5 @@ def create_memo(db: Session, memo: schemas.MemoReq):
         db.add(db_memo)
         db.commit()
         db.refresh(db_memo)
-        return db_memo
+        return True
     return False

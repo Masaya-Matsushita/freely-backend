@@ -1,4 +1,5 @@
 import datetime
+from typing import Literal
 from pydantic import BaseModel, Field
 
 
@@ -120,20 +121,29 @@ class SpotReqDelete(BaseModel):
 
 
 
-class MemoReq(BaseModel):
-    password: str
-    plan_id: str
-    memo_id: int
+# メモGET時
+class MemoResGet(BaseModel):
     spot_id: int
-    text: str = Field(max_length=150)
-    marked: str
-
-
-class MemoRes(BaseModel):
     memo_id: int
-    spot_id: int
     text: str = Field(max_length=150)
-    marked: str
+    marked: Literal['red', 'green', 'none']
 
     class Config:
         orm_mode = True
+
+
+# メモ作成
+class MemoReqPost(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    text: str = Field(max_length=150)
+    marked: Literal['red', 'green', 'none']
+
+
+# メモ削除
+class MemoReqDelete(BaseModel):
+    password: str
+    plan_id: str
+    spot_id: int
+    memo_id: int
