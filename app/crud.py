@@ -5,12 +5,19 @@ from . import models, schemas
 
 # プラン一覧取得
 def get_plans(db: Session, planId: str):
-    return db.query(models.Plan).filter(models.Plan.plan_id==planId).all()
-
+    return db.query(models.Plan).filter(models.Plan.plan_id==planId).all()[0]
 
 # スポット一覧取得
 def get_spots(db: Session, planId: str):
     return db.query(models.Spot).filter(models.Spot.plan_id==planId).all()
+
+# パスワード認証
+def get_auth(db: Session, planId: str, password: str):
+    plan = db.query(models.Plan).filter(models.Plan.plan_id==planId).all()[0]
+    if plan.verify_key == password:
+        return True
+    else:
+        return False
 
 # メモ一覧取得
 def get_memos(db: Session):
