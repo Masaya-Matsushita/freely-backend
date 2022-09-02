@@ -51,6 +51,10 @@ def get_memos(spot_id: int = 0, db: Session = Depends(get_db)):
 
 
 # POST
+@app.post("/auth", response_model=bool)
+def auth_user(auth: schemas.AuthUser, db: Session = Depends(get_db)):
+    return crud.auth_user(db=db, plan_id=auth.plan_id, password=auth.password)
+
 @app.post("/plan", response_model=schemas.PlanResPost)
 def create_plan(plan: schemas.PlanReqPost, db: Session = Depends(get_db)):
     return crud.create_plan(db=db, plan=plan)

@@ -46,6 +46,12 @@ class MemoTest(BaseModel):
         orm_mode = True
 
 
+# パスワード認証
+class AuthUser(BaseModel):
+    plan_id: str
+    password: str
+
+
 # 履歴GET時(≠プラン)
 class PlanResHistory(BaseModel):
     plan_name: str = Field(max_length=40)
@@ -55,6 +61,7 @@ class PlanResHistory(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 # プランGET時
 class PlanResGet(BaseModel):
@@ -100,7 +107,6 @@ class PlanReqDelete(BaseModel):
 
 # スポットGET時
 class SpotResGet(BaseModel):
-    plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
