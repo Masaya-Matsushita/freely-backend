@@ -18,7 +18,7 @@ class Spot(Base):
     spot_id = Column(Integer, primary_key=True, index=True)
     spot_name = Column(String, nullable=False)
     image = Column(String)
-    icon = Column(Integer)
+    icon = Column(String)
     url = Column(String)
     priority = Column(Boolean, nullable=False)
     visited = Column(Boolean, nullable=False)

@@ -1,5 +1,5 @@
 import datetime
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
 
@@ -27,7 +27,7 @@ class SpotTest(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str
-    icon: int
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     url: str
     priority: bool
     visited: bool
@@ -110,7 +110,7 @@ class SpotResGet(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: int #0の可能性あり
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     url: str #空文字の可能性あり
     priority: bool
     visited: bool
@@ -126,7 +126,7 @@ class SpotReqPost(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: int #0の可能性あり
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     url: str #空文字の可能性あり
 
 
@@ -137,7 +137,7 @@ class SpotReqPutBody(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: int #0の可能性あり
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     url: str #空文字の可能性あり
 
 # Priority更新
