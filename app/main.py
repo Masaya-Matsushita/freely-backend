@@ -8,7 +8,6 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# with句で書き換え？
 # https://fastapi.tiangolo.com/ja/tutorial/dependencies/dependencies-with-yield/
 def get_db():
     db = session()

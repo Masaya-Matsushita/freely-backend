@@ -15,15 +15,15 @@ class Spot(Base):
     plan_id = Column(String, ForeignKey('plans.plan_id', ondelete='CASCADE'))
     spot_id = Column(Integer, primary_key=True, index=True)
     spot_name = Column(String, nullable=False)
-    image = Column(String)
-    icon = Column(String)
+    image = Column(String, nullable=False)
+    icon = Column(String, nullable=False)
     priority = Column(Boolean, nullable=False)
     visited = Column(Boolean, nullable=False)
 
 
 class Memo(Base):
     __tablename__ = 'memos'
-    spot_id = Column(String, ForeignKey('spots.spot_id', ondelete='CASCADE'))
+    spot_id = Column(Integer, ForeignKey('spots.spot_id', ondelete='CASCADE'))
     memo_id = Column(Integer, primary_key=True, index=True)
     text = Column(String, nullable=False)
     marked = Column(String, nullable=False)

@@ -83,9 +83,10 @@ class PlanReqDelete(BaseModel):
 
 # スポットGET時
 class SpotResGet(BaseModel):
+    plan_id: str # 必要ない？
     spot_id: int
     spot_name: str = Field(max_length=40)
-    image: str #空文字の可能性あり
+    image: str
     icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
     priority: bool
     visited: bool
@@ -100,7 +101,7 @@ class SpotReqPost(BaseModel):
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
-    image: str #空文字の可能性あり
+    image: str
     icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
 
 
@@ -110,7 +111,7 @@ class SpotReqPutBody(BaseModel):
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
-    image: str #空文字の可能性あり
+    image: str
     icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
 
 
