@@ -8,8 +8,6 @@ class Plan(Base):
     plan_name = Column(String, nullable=False)
     start_date = Column(String, nullable=False)
     end_date = Column(String, nullable=False)
-    email = Column(String)
-    timestamp = Column(String, nullable=False)
 
 
 class Spot(Base):
@@ -19,7 +17,6 @@ class Spot(Base):
     spot_name = Column(String, nullable=False)
     image = Column(String)
     icon = Column(String)
-    url = Column(String)
     priority = Column(Boolean, nullable=False)
     visited = Column(Boolean, nullable=False)
 

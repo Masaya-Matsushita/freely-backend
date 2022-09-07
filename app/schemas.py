@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 from pydantic import BaseModel, Field
 
 # テスト用
@@ -8,8 +8,6 @@ class PlanTest(BaseModel):
     start_date: str
     end_date: str
     verify_key: str
-    email: str
-    timestamp: str
 
     class Config:
         orm_mode = True
@@ -20,8 +18,7 @@ class SpotTest(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str
-    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
-    url: str
+    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
     priority: bool
     visited: bool
 
@@ -33,7 +30,7 @@ class MemoTest(BaseModel):
     spot_id: int
     memo_id: int
     text: str = Field(max_length=150)
-    marked: str
+    marked: Literal['White', 'Red', 'Green']
 
     class Config:
         orm_mode = True
@@ -61,8 +58,6 @@ class PlanReqPost(BaseModel):
     plan_name: str = Field(max_length=40)
     start_date: str
     end_date: str
-    email: str #空文字の可能性あり
-    timestamp: str  # TODO: timestampサーバー側で管理すべきかも
 
 class PlanResPost(BaseModel):
     plan_id: str
@@ -77,7 +72,6 @@ class PlanReqPut(BaseModel):
     plan_name: str = Field(max_length=40)
     start_date: str
     end_date: str
-    timestamp: str # TODO: timestampサーバー側で管理すべきかも
 
 
 # プラン削除
@@ -92,8 +86,7 @@ class SpotResGet(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
-    url: str #空文字の可能性あり
+    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
     priority: bool
     visited: bool
 
@@ -108,8 +101,7 @@ class SpotReqPost(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
-    url: str #空文字の可能性あり
+    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
 
 
 # スポット更新
@@ -119,8 +111,8 @@ class SpotReqPutBody(BaseModel):
     spot_id: int
     spot_name: str = Field(max_length=40)
     image: str #空文字の可能性あり
-    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
-    url: str #空文字の可能性あり
+    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
+
 
 # Priority更新
 # TODO: swrの挙動次第ではresponseすべきかも
@@ -152,7 +144,7 @@ class MemoResGet(BaseModel):
     spot_id: int
     memo_id: int
     text: str = Field(max_length=150)
-    marked: Literal['red', 'green', 'none']
+    marked: Literal['White', 'Red', 'Green']
 
     class Config:
         orm_mode = True
@@ -164,7 +156,7 @@ class MemoReqPost(BaseModel):
     plan_id: str
     spot_id: int
     text: str = Field(max_length=150)
-    marked: Literal['red', 'green', 'none']
+    marked: Literal['White', 'Red', 'Green']
 
 
 # メモ削除

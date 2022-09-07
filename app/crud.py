@@ -66,8 +66,6 @@ def create_plan(db: Session, plan: schemas.PlanReqPost):
         start_date = plan.start_date,
         end_date = plan.end_date,
         verify_key = get_hash(plan.password),
-        email = plan.email,
-        timestamp = plan.timestamp
     )
     db.add(db_plan)
     db.commit()
@@ -83,7 +81,6 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
             spot_name = spot.spot_name,
             image = spot.image,
             icon = spot.icon,
-            url =  spot.url,
             priority = False,
             visited = False,
         )
