@@ -150,8 +150,8 @@ class SpotReqDelete(BaseModel):
 
 
 
-# メモGET時
-class MemoResGet(BaseModel):
+# メモリストGET時
+class MemoListResGet(BaseModel):
     spot_id: int
     memo_id: int
     text: str = Field(max_length=150)

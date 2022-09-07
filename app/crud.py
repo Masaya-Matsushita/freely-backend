@@ -27,16 +27,16 @@ def auth_user(db: Session, plan_id: str, password: str):
 
 # テスト用
 def get_plan_test(db: Session):
-    plans = db.query(models.Plan).all()
-    return plans
+    plan_list = db.query(models.Plan).all()
+    return plan_list
 
 def get_spot_test(db: Session):
-    spots = db.query(models.Spot).all()
-    return spots
+    spot_list = db.query(models.Spot).all()
+    return spot_list
 
 def get_memo_test(db: Session):
-    memos = db.query(models.Memo).all()
-    return memos
+    memo_list = db.query(models.Memo).all()
+    return memo_list
 
 
 # プラン取得
@@ -50,6 +50,7 @@ def get_plan(db: Session, plan_id: str):
     }
 
 # スポット取得
+# TODO: spotIdの値が誤っているとき、500エラーが返る -> undefinedを返すのが綺麗？
 def get_spot(db: Session, plan_id: str, spot_id: str):
     spot = db.query(models.Spot).filter(models.Spot.spot_id==int(spot_id)).all()[0]
     if spot.plan_id == plan_id:
@@ -64,8 +65,8 @@ def get_spot_list(db: Session, plan_id: str):
     return db.query(models.Spot).filter(models.Spot.plan_id==plan_id).all()
 
 # メモ一覧取得
-def get_memos(db: Session, spot_id: int):
-    return db.query(models.Memo).filter(models.Memo.spot_id==spot_id).all()
+def get_memo_list(db: Session, spot_id: str):
+    return db.query(models.Memo).filter(models.Memo.spot_id==int(spot_id)).all()
 
 
 # プラン登録
