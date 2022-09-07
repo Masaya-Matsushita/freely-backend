@@ -39,17 +39,6 @@ def get_memo_test(db: Session):
     return memos
 
 
-# 履歴取得
-# TODO: plan_idが配列の場合に対応する
-def get_history(db: Session, plan_id: str):
-    plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).all()[0]
-    return {
-        'plan_name': plan.plan_name,
-        'start_date': plan.start_date,
-        'end_date': plan.end_date,
-        'timestamp': plan.timestamp,
-    }
-
 # プラン取得
 def get_plan(db: Session, plan_id: str):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).all()[0]

@@ -33,10 +33,6 @@ def get_memo_test(db: Session = Depends(get_db)):
 
 
 # GET
-@app.get("/history", response_model=schemas.PlanResHistory)
-def get_history(plan_id: str = 'default', db: Session = Depends(get_db)):
-    return crud.get_history(db=db, plan_id=plan_id)
-
 @app.get("/plan", response_model=schemas.PlanResGet)
 def get_plan(plan_id: str = 'default', db: Session = Depends(get_db)):
     return crud.get_plan(db=db, plan_id=plan_id)

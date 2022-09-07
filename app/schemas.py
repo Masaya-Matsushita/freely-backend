@@ -52,17 +52,6 @@ class AuthUser(BaseModel):
     password: str
 
 
-# 履歴GET時(≠プラン)
-class PlanResHistory(BaseModel):
-    plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
-    timestamp: datetime.date
-
-    class Config:
-        orm_mode = True
-
-
 # プランGET時
 class PlanResGet(BaseModel):
     plan_name: str = Field(max_length=40)
