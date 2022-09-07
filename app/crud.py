@@ -40,6 +40,7 @@ def get_memo_test(db: Session):
 
 
 # プラン取得
+# TODO: planIdの値が誤っているとき、500エラーが返る -> undefinedを返すのが綺麗？
 def get_plan(db: Session, plan_id: str):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).all()[0]
     return {
@@ -48,8 +49,18 @@ def get_plan(db: Session, plan_id: str):
         'end_date': plan.end_date,
     }
 
+# スポット取得
+def get_spot(db: Session, plan_id: str, spot_id: str):
+    spot = db.query(models.Spot).filter(models.Spot.spot_id==int(spot_id)).all()[0]
+    if spot.plan_id == plan_id:
+        return {
+            'spot_name': spot.spot_name,
+            'icon': spot.icon,
+            'image': spot.image
+        }
+
 # スポット一覧取得
-def get_spots(db: Session, plan_id: str):
+def get_spot_list(db: Session, plan_id: str):
     return db.query(models.Spot).filter(models.Spot.plan_id==plan_id).all()
 
 # メモ一覧取得

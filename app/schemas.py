@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
 # テスト用
@@ -17,8 +17,8 @@ class SpotTest(BaseModel):
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
-    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
     priority: bool
     visited: bool
 
@@ -83,11 +83,21 @@ class PlanReqDelete(BaseModel):
 
 # スポットGET時
 class SpotResGet(BaseModel):
+    spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
+    image: str
+
+    class Config:
+        orm_mode = True
+
+
+# スポットリストGET時
+class SpotListResGet(BaseModel):
     plan_id: str # 必要ない？
     spot_id: int
     spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
-    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
     priority: bool
     visited: bool
 
@@ -101,8 +111,8 @@ class SpotReqPost(BaseModel):
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
-    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
 
 
 # スポット更新
@@ -111,8 +121,8 @@ class SpotReqPutBody(BaseModel):
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
-    icon: Literal['', 'Spot', 'Restaurant', 'Souvenir', 'Hotel']
 
 
 # Priority更新

@@ -15,8 +15,8 @@ class Spot(Base):
     plan_id = Column(String, ForeignKey('plans.plan_id', ondelete='CASCADE'))
     spot_id = Column(Integer, primary_key=True, index=True)
     spot_name = Column(String, nullable=False)
+    icon = Column(String, nullable=True)
     image = Column(String, nullable=False)
-    icon = Column(String, nullable=False)
     priority = Column(Boolean, nullable=False)
     visited = Column(Boolean, nullable=False)
 
