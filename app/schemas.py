@@ -1,22 +1,15 @@
-import datetime
 from typing import Literal, Optional
 from pydantic import BaseModel, Field
-
-
-# TODO: 型をもっと指定する(Optional, email, url, literalTypesなど)
-
-# TODO: クラスは別々で指定すべきか、Optionalを使用して1つにまとめるべきか
-
 
 # テスト用
 class PlanTest(BaseModel):
     plan_id: str
     plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
+    start_date: str
+    end_date: str
     verify_key: str
     email: str
-    timestamp: datetime.date
+    timestamp: str
 
     class Config:
         orm_mode = True
@@ -55,8 +48,8 @@ class AuthUser(BaseModel):
 # プランGET時
 class PlanResGet(BaseModel):
     plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
+    start_date: str
+    end_date: str
 
     class Config:
         orm_mode = True
@@ -66,10 +59,10 @@ class PlanResGet(BaseModel):
 class PlanReqPost(BaseModel):
     password: str
     plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
+    start_date: str
+    end_date: str
     email: str #空文字の可能性あり
-    timestamp: datetime.date  # TODO: timestampサーバー側で管理すべきかも
+    timestamp: str  # TODO: timestampサーバー側で管理すべきかも
 
 class PlanResPost(BaseModel):
     plan_id: str
@@ -82,9 +75,9 @@ class PlanReqPut(BaseModel):
     password: str
     plan_id: str
     plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
-    timestamp: datetime.date # TODO: timestampサーバー側で管理すべきかも
+    start_date: str
+    end_date: str
+    timestamp: str # TODO: timestampサーバー側で管理すべきかも
 
 
 # プラン削除

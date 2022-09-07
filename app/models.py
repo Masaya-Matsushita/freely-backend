@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Date
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from .database import Base
 
 class Plan(Base):
@@ -6,10 +6,10 @@ class Plan(Base):
     plan_id = Column(String, primary_key=True, index=True)
     verify_key = Column(String, nullable=False)
     plan_name = Column(String, nullable=False)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
+    start_date = Column(String, nullable=False)
+    end_date = Column(String, nullable=False)
     email = Column(String)
-    timestamp = Column(Date, nullable=False)
+    timestamp = Column(String, nullable=False)
 
 
 class Spot(Base):
