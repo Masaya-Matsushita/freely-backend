@@ -70,7 +70,6 @@ def get_memo_list(db: Session, spot_id: str):
 
 
 # プラン登録
-# TODO: idはサーバー側
 def create_plan(db: Session, plan: schemas.PlanReqPost):
     db_plan = models.Plan(
         plan_id = str(uuid.uuid4()),
@@ -86,7 +85,13 @@ def create_plan(db: Session, plan: schemas.PlanReqPost):
 
 # スポット登録
 def create_spot(db: Session, spot: schemas.SpotReqPost):
-    isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    # パスワードがあれば認証
+    if spot.password:
+        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    else:
+        return False
+
+    # 認証成功でデータベースに追加
     if isAuth:
         db_spot = models.Spot(
             plan_id = spot.plan_id,

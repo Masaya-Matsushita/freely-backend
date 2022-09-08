@@ -106,10 +106,10 @@ class SpotListResGet(BaseModel):
 
 
 # スポット作成
+
 class SpotReqPost(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
-    spot_id: int
     spot_name: str = Field(max_length=40)
     icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
