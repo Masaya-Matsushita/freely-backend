@@ -138,3 +138,35 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
         db.refresh(db_memo)
         return True
     return False
+
+
+# スポット削除
+def delete_spot(db: Session, spot: schemas.SpotReqDelete):
+    # パスワードがあれば認証
+    if spot.password:
+        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    else:
+        return False
+
+    # 認証成功でデータベースに追加
+    if isAuth:
+        db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).delete()
+        db.commit()
+        return True
+    return False
+
+
+# メモ削除
+def delete_memo(db: Session, memo: schemas.MemoReqDelete):
+    # パスワードがあれば認証
+    if memo.password:
+        isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
+    else:
+        return False
+
+    # 認証成功でデータベースに追加
+    if isAuth:
+        db.query(models.Memo).filter(models.Memo.memo_id==memo.memo_id).delete()
+        db.commit()
+        return True
+    return False

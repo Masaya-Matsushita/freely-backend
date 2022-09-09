@@ -65,3 +65,13 @@ def create_spot(spot: schemas.SpotReqPost, db: Session = Depends(get_db)):
 @app.post("/memo", response_model=bool)
 def create_memo(memo: schemas.MemoReqPost, db: Session = Depends(get_db)):
     return crud.create_memo(db=db, memo=memo)
+
+
+# DELETE
+@app.delete("/spot", response_model=bool)
+def delete_spot(spot: schemas.SpotReqDelete, db: Session = Depends(get_db)):
+    return crud.delete_spot(db=db, spot=spot)
+
+@app.delete("/memo", response_model=bool)
+def delete_memo(memo: schemas.MemoReqDelete, db: Session = Depends(get_db)):
+    return crud.delete_memo(db=db, memo=memo)
