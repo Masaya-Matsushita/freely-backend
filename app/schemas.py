@@ -29,7 +29,7 @@ class SpotTest(BaseModel):
 class MemoTest(BaseModel):
     spot_id: int
     memo_id: int
-    text: str = Field(max_length=150)
+    text: str = Field(max_length=100)
     marked: Literal['White', 'Red', 'Green']
 
     class Config:
@@ -154,7 +154,7 @@ class SpotReqDelete(BaseModel):
 class MemoListResGet(BaseModel):
     spot_id: int
     memo_id: int
-    text: str = Field(max_length=150)
+    text: str = Field(max_length=100)
     marked: Literal['White', 'Red', 'Green']
 
     class Config:
@@ -163,10 +163,10 @@ class MemoListResGet(BaseModel):
 
 # メモ作成
 class MemoReqPost(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
-    text: str = Field(max_length=150)
+    text: str = Field(max_length=100)
     marked: Literal['White', 'Red', 'Green']
 
 

@@ -49,6 +49,7 @@ def get_plan(db: Session, plan_id: str):
         'end_date': plan.end_date,
     }
 
+
 # スポット取得
 # TODO: spotIdの値が誤っているとき、500エラーが返る -> undefinedを返すのが綺麗？
 def get_spot(db: Session, plan_id: str, spot_id: str):
@@ -60,9 +61,11 @@ def get_spot(db: Session, plan_id: str, spot_id: str):
             'image': spot.image
         }
 
+
 # スポット一覧取得
 def get_spot_list(db: Session, plan_id: str):
     return db.query(models.Spot).filter(models.Spot.plan_id==plan_id).all()
+
 
 # メモ一覧取得
 def get_memo_list(db: Session, spot_id: str):
@@ -82,6 +85,7 @@ def create_plan(db: Session, plan: schemas.PlanReqPost):
     db.commit()
     db.refresh(db_plan)
     return { 'plan_id' : db_plan.plan_id }
+
 
 # スポット登録
 def create_spot(db: Session, spot: schemas.SpotReqPost):
@@ -107,9 +111,16 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
         return True
     return False
 
+
 # メモ登録
 def create_memo(db: Session, memo: schemas.MemoReqPost):
-    isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
+    # パスワードがあれば認証
+    if memo.password:
+        isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
+    else:
+        return False
+
+    # 認証成功でデータベースに追加
     if isAuth:
         db_memo = models.Memo(
             spot_id = memo.spot_id,
