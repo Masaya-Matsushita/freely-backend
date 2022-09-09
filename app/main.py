@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from . import crud, models, schemas
@@ -44,9 +44,9 @@ def get_spot(plan_id: str = 'default', spot_id: str = '0', db: Session = Depends
 def get_spot_list(plan_id: str = 'default', db: Session = Depends(get_db)):
     return crud.get_spot_list(db=db, plan_id=plan_id)
 
-@app.get("/memo-list", response_model=List[schemas.MemoListResGet])
-def get_memo_list(spot_id: str = '0', db: Session = Depends(get_db)):
-    return crud.get_memo_list(db=db, spot_id=spot_id)
+@app.get("/memo-list", response_model=Union[List[schemas.MemoListResGet], bool])
+def get_memo_list(plan_id: str = 'default', spot_id: str = '0', db: Session = Depends(get_db)):
+    return crud.get_memo_list(db=db, plan_id=plan_id, spot_id=spot_id)
 
 
 # POST

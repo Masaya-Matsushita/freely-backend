@@ -23,6 +23,7 @@ class Spot(Base):
 
 class Memo(Base):
     __tablename__ = 'memos'
+    plan_id = Column(String, ForeignKey('plans.plan_id', ondelete='CASCADE'))
     spot_id = Column(Integer, ForeignKey('spots.spot_id', ondelete='CASCADE'))
     memo_id = Column(Integer, primary_key=True, index=True)
     text = Column(String, nullable=False)

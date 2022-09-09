@@ -27,6 +27,7 @@ class SpotTest(BaseModel):
 
 
 class MemoTest(BaseModel):
+    plan_id: str
     spot_id: int
     memo_id: int
     text: str = Field(max_length=100)
@@ -106,7 +107,6 @@ class SpotListResGet(BaseModel):
 
 
 # スポット作成
-
 class SpotReqPost(BaseModel):
     password: Optional[str]
     plan_id: str
@@ -152,6 +152,7 @@ class SpotReqDelete(BaseModel):
 
 # メモリストGET時
 class MemoListResGet(BaseModel):
+    plan_id: str
     spot_id: int
     memo_id: int
     text: str = Field(max_length=100)

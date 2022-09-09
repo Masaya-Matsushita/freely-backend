@@ -68,8 +68,13 @@ def get_spot_list(db: Session, plan_id: str):
 
 
 # メモ一覧取得
-def get_memo_list(db: Session, spot_id: str):
-    return db.query(models.Memo).filter(models.Memo.spot_id==int(spot_id)).all()
+def get_memo_list(db: Session, plan_id: str, spot_id: str):
+    memo_list = db.query(models.Memo).filter(models.Memo.spot_id==int(spot_id)).all()
+    # plan_idが正しくないリクエストを規制
+    if memo_list and memo_list[0].plan_id != plan_id:
+        return False
+    else:
+        return memo_list
 
 
 # プラン登録
@@ -123,6 +128,7 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
     # 認証成功でデータベースに追加
     if isAuth:
         db_memo = models.Memo(
+            plan_id = memo.plan_id,
             spot_id = memo.spot_id,
             text = memo.text,
             marked = memo.marked,
