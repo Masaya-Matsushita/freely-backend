@@ -39,8 +39,8 @@ class MemoTest(BaseModel):
 
 # パスワード認証
 class AuthUser(BaseModel):
-    plan_id: str
     password: str
+    plan_id: str
 
 
 # プランGET時
@@ -68,7 +68,7 @@ class PlanResPost(BaseModel):
 
 # プラン更新
 class PlanReqPut(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     plan_name: str = Field(max_length=40)
     start_date: str
@@ -77,7 +77,7 @@ class PlanReqPut(BaseModel):
 
 # プラン削除
 class PlanReqDelete(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
 
 
@@ -117,7 +117,7 @@ class SpotReqPost(BaseModel):
 
 # スポット更新
 class SpotReqPutBody(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
     spot_name: str = Field(max_length=40)
@@ -128,7 +128,7 @@ class SpotReqPutBody(BaseModel):
 # Priority更新
 # TODO: swrの挙動次第ではresponseすべきかも
 class SpotReqPutPriority(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
     priority: bool
@@ -136,7 +136,7 @@ class SpotReqPutPriority(BaseModel):
 # visited更新
 # TODO: swrの挙動次第ではresponseすべきかも
 class SpotReqPutVisited(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
     visited: bool
@@ -144,7 +144,7 @@ class SpotReqPutVisited(BaseModel):
 
 # スポット削除
 class SpotReqDelete(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
 
@@ -173,7 +173,7 @@ class MemoReqPost(BaseModel):
 
 # メモ削除
 class MemoReqDelete(BaseModel):
-    password: str
+    password: Optional[str]
     plan_id: str
     spot_id: int
     memo_id: int
