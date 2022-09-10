@@ -75,6 +75,16 @@ def update_plan(plan: schemas.PlanReqPut, db: Session = Depends(get_db)):
 @app.put("/spot", response_model=bool)
 def update_spot(spot: schemas.SpotReqPutBody, db: Session = Depends(get_db)):
     return crud.update_spot(db=db, spot=spot)
+
+@app.put("/priority", response_model=bool)
+def update_priority(spot: schemas.SpotReqPutPriority, db: Session = Depends(get_db)):
+    return crud.update_priority(db=db, spot=spot)
+
+@app.put("/visited", response_model=bool)
+def update_visited(spot: schemas.SpotReqPutVisited, db: Session = Depends(get_db)):
+    return crud.update_visited(db=db, spot=spot)
+
+
 # DELETE
 @app.delete("/spot", response_model=bool)
 def delete_spot(spot: schemas.SpotReqDelete, db: Session = Depends(get_db)):

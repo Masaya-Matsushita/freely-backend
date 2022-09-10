@@ -180,6 +180,58 @@ def update_spot(db: Session, spot: schemas.SpotReqPutBody):
     return False
 
 
+# priority更新
+def update_priority(db: Session, spot: schemas.SpotReqPutPriority):
+    # パスワードがあれば認証
+    if spot.password:
+        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    else:
+        return False
+
+    # 認証成功でpriority更新
+    if isAuth:
+        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+        db_spot.priority = spot.priority
+        db.commit()
+        db.refresh(db_spot)
+        return True
+    return False
+
+
+# visited更新
+def update_visited(db: Session, spot: schemas.SpotReqPutVisited):
+    # パスワードがあれば認証
+    if spot.password:
+        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    else:
+        return False
+
+    # 認証成功でvisited更新
+    if isAuth:
+        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+        db_spot.visited = spot.visited
+
+        if spot.visited:
+            # スポットのメモにメッセージを追加
+            db_memo = models.Memo(
+                plan_id = spot.plan_id,
+                spot_id = spot.spot_id,
+                text = 'この場所は訪れました！',
+                marked = 'Green',
+            )
+            db.add(db_memo)
+            db.commit()
+            db.refresh(db_spot)
+            db.refresh(db_memo)
+        else:
+            # スポットのメモからメッセージを削除
+            db.query(models.Memo).filter(models.Memo.spot_id==spot.spot_id).filter(models.Memo.marked=='Green').delete()
+            db.commit()
+            db.refresh(db_spot)
+        return True
+    return False
+
+
 # スポット削除
 def delete_spot(db: Session, spot: schemas.SpotReqDelete):
     # パスワードがあれば認証
@@ -188,7 +240,7 @@ def delete_spot(db: Session, spot: schemas.SpotReqDelete):
     else:
         return False
 
-    # 認証成功でデータベースに追加
+    # 認証成功でデータを削除
     if isAuth:
         db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).delete()
         db.commit()
@@ -204,7 +256,7 @@ def delete_memo(db: Session, memo: schemas.MemoReqDelete):
     else:
         return False
 
-    # 認証成功でデータベースに追加
+    # 認証成功でデータを削除
     if isAuth:
         db.query(models.Memo).filter(models.Memo.memo_id==memo.memo_id).delete()
         db.commit()

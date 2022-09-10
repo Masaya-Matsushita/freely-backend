@@ -126,15 +126,14 @@ class SpotReqPutBody(BaseModel):
 
 
 # Priority更新
-# TODO: swrの挙動次第ではresponseすべきかも
 class SpotReqPutPriority(BaseModel):
     password: Optional[str]
     plan_id: str
     spot_id: int
     priority: bool
 
+
 # visited更新
-# TODO: swrの挙動次第ではresponseすべきかも
 class SpotReqPutVisited(BaseModel):
     password: Optional[str]
     plan_id: str
