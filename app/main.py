@@ -67,6 +67,14 @@ def create_memo(memo: schemas.MemoReqPost, db: Session = Depends(get_db)):
     return crud.create_memo(db=db, memo=memo)
 
 
+#PUT
+@app.put("/plan", response_model=bool)
+def update_plan(plan: schemas.PlanReqPut, db: Session = Depends(get_db)):
+    return crud.update_plan(db=db, plan=plan)
+
+@app.put("/spot", response_model=bool)
+def update_spot(spot: schemas.SpotReqPutBody, db: Session = Depends(get_db)):
+    return crud.update_spot(db=db, spot=spot)
 # DELETE
 @app.delete("/spot", response_model=bool)
 def delete_spot(spot: schemas.SpotReqDelete, db: Session = Depends(get_db)):

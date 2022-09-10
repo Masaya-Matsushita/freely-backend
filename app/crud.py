@@ -140,6 +140,46 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
     return False
 
 
+# プラン更新
+def update_plan(db: Session, plan: schemas.PlanReqPut):
+    # パスワードがあれば認証
+    if plan.password:
+        isAuth = auth_user(db=db, plan_id=plan.plan_id, password=plan.password)
+    else:
+        return False
+
+    # 認証成功でデータを更新
+    if isAuth:
+        db_plan = db.query(models.Plan).filter(models.Plan.plan_id==plan.plan_id).first()
+        db_plan.plan_name = plan.plan_name
+        db_plan.start_date = plan.start_date
+        db_plan.end_date = plan.end_date
+        db.commit()
+        db.refresh(db_plan)
+        return True
+    return False
+
+
+# スポット更新
+def update_spot(db: Session, spot: schemas.SpotReqPutBody):
+    # パスワードがあれば認証
+    if spot.password:
+        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
+    else:
+        return False
+
+    # 認証成功でデータを更新
+    if isAuth:
+        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+        db_spot.spot_name = spot.spot_name
+        db_spot.icon = spot.icon
+        db_spot.image = spot.image
+        db.commit()
+        db.refresh(db_spot)
+        return True
+    return False
+
+
 # スポット削除
 def delete_spot(db: Session, spot: schemas.SpotReqDelete):
     # パスワードがあれば認証
