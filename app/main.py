@@ -32,11 +32,11 @@ def get_memo_test(db: Session = Depends(get_db)):
 
 
 # GET
-@app.get("/plan", response_model=schemas.PlanResGet)
+@app.get("/plan", response_model=List[schemas.PlanResGet])
 def get_plan(plan_id: str = 'default', db: Session = Depends(get_db)):
     return crud.get_plan(db=db, plan_id=plan_id)
 
-@app.get("/spot", response_model=schemas.SpotResGet)
+@app.get("/spot", response_model=List[schemas.SpotResGet])
 def get_spot(plan_id: str = 'default', spot_id: str = '0', db: Session = Depends(get_db)):
     return crud.get_spot(db=db, plan_id=plan_id, spot_id=spot_id)
 
