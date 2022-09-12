@@ -18,7 +18,6 @@ class Spot(Base):
     icon = Column(String, nullable=True)
     image = Column(String, nullable=False)
     priority = Column(Boolean, nullable=False)
-    visited = Column(Boolean, nullable=False)
 
 
 class Memo(Base):

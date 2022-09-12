@@ -20,7 +20,6 @@ class SpotTest(BaseModel):
     icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
     priority: bool
-    visited: bool
 
     class Config:
         orm_mode = True
@@ -31,7 +30,7 @@ class MemoTest(BaseModel):
     spot_id: int
     memo_id: int
     text: str = Field(max_length=100)
-    marked: Literal['White', 'Red', 'Green']
+    marked: Literal['White', 'Red']
 
     class Config:
         orm_mode = True
@@ -100,7 +99,6 @@ class SpotListResGet(BaseModel):
     icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
     priority: bool
-    visited: bool
 
     class Config:
         orm_mode = True
@@ -133,14 +131,6 @@ class SpotReqPutPriority(BaseModel):
     priority: bool
 
 
-# visited更新
-class SpotReqPutVisited(BaseModel):
-    password: Optional[str]
-    plan_id: str
-    spot_id: int
-    visited: bool
-
-
 # スポット削除
 class SpotReqDelete(BaseModel):
     password: Optional[str]
@@ -155,7 +145,7 @@ class MemoListResGet(BaseModel):
     spot_id: int
     memo_id: int
     text: str = Field(max_length=100)
-    marked: Literal['White', 'Red', 'Green']
+    marked: Literal['White', 'Red']
 
     class Config:
         orm_mode = True
@@ -167,7 +157,7 @@ class MemoReqPost(BaseModel):
     plan_id: str
     spot_id: int
     text: str = Field(max_length=100)
-    marked: Literal['White', 'Red', 'Green']
+    marked: Literal['White', 'Red']
 
 
 # メモ削除

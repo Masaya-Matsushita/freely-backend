@@ -110,7 +110,6 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
             image = spot.image,
             icon = spot.icon,
             priority = False,
-            visited = False,
         )
         db.add(db_spot)
         db.commit()
@@ -196,40 +195,6 @@ def update_priority(db: Session, spot: schemas.SpotReqPutPriority):
         db_spot.priority = spot.priority
         db.commit()
         db.refresh(db_spot)
-        return True
-    return False
-
-
-# visited更新
-def update_visited(db: Session, spot: schemas.SpotReqPutVisited):
-    # パスワードがあれば認証
-    if spot.password:
-        isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
-    else:
-        return False
-
-    # 認証成功でvisited更新
-    if isAuth:
-        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
-        db_spot.visited = spot.visited
-
-        if spot.visited:
-            # スポットのメモにメッセージを追加
-            db_memo = models.Memo(
-                plan_id = spot.plan_id,
-                spot_id = spot.spot_id,
-                text = 'この場所は訪れました！',
-                marked = 'Green',
-            )
-            db.add(db_memo)
-            db.commit()
-            db.refresh(db_spot)
-            db.refresh(db_memo)
-        else:
-            # スポットのメモからメッセージを削除
-            db.query(models.Memo).filter(models.Memo.spot_id==spot.spot_id).filter(models.Memo.marked=='Green').delete()
-            db.commit()
-            db.refresh(db_spot)
         return True
     return False
 
