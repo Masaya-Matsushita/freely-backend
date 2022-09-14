@@ -1,41 +1,168 @@
-import datetime
+from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
-
-# TODO: 型をもっと指定する(Optional, email, url, literalTypesなど)
-
-class Plan(BaseModel):
+# テスト用
+class PlanTest(BaseModel):
     plan_id: str
     plan_name: str = Field(max_length=40)
-    start_date: datetime.date
-    end_date: datetime.date
+    start_date: str
+    end_date: str
     verify_key: str
-    email: str
-    timestamp: datetime.date
 
     class Config:
         orm_mode = True
 
 
-class Spot(BaseModel):
+class SpotTest(BaseModel):
+    plan_id: str
     spot_id: int
+    spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
+    image: str
+    priority: bool
+
+    class Config:
+        orm_mode = True
+
+
+class MemoTest(BaseModel):
+    plan_id: str
+    spot_id: int
+    memo_id: int
+    text: str = Field(max_length=100)
+    marked: Literal['White', 'Red']
+
+    class Config:
+        orm_mode = True
+
+
+# パスワード認証
+class AuthUser(BaseModel):
+    password: str
+    plan_id: str
+
+
+# プランGET時
+class PlanResGet(BaseModel):
+    plan_name: str = Field(max_length=40)
+    start_date: str
+    end_date: str
+
+    class Config:
+        orm_mode = True
+
+
+# プラン作成
+class PlanReqPost(BaseModel):
+    password: str
+    plan_name: str = Field(max_length=40)
+    start_date: str
+    end_date: str
+
+class PlanResPost(BaseModel):
+    plan_id: str
+
+    class Config:
+        orm_mode = True
+
+# プラン更新
+class PlanReqPut(BaseModel):
+    password: Optional[str]
+    plan_id: str
+    plan_name: str = Field(max_length=40)
+    start_date: str
+    end_date: str
+
+
+# プラン削除
+class PlanReqDelete(BaseModel):
+    password: Optional[str]
+    plan_id: str
+
+
+
+# スポットGET時
+class SpotResGet(BaseModel):
+    spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
+    image: str
+
+    class Config:
+        orm_mode = True
+
+
+# スポットリストGET時
+class SpotListResGet(BaseModel):
+    plan_id: str # 必要ない？
+    spot_id: int
+    spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
+    image: str
+    priority: bool
+
+    class Config:
+        orm_mode = True
+
+
+# スポット作成
+class SpotReqPost(BaseModel):
+    password: Optional[str]
     plan_id: str
     spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
     image: str
-    url: str
-    priority: bool
-    visited: bool
-    icon: int
-
-    class Config:
-        orm_mode = True
 
 
-class Memo(BaseModel):
-    memo_id: int
+# スポット更新
+class SpotReqPutBody(BaseModel):
+    password: Optional[str]
+    plan_id: str
     spot_id: int
-    text: str = Field(max_length=150)
-    marked: str
+    spot_name: str = Field(max_length=40)
+    icon: Optional[Literal['Spot', 'Restaurant', 'Souvenir', 'Hotel']]
+    image: str
+
+
+# Priority更新
+class SpotReqPutPriority(BaseModel):
+    password: Optional[str]
+    plan_id: str
+    spot_id: int
+    priority: bool
+
+
+# スポット削除
+class SpotReqDelete(BaseModel):
+    password: Optional[str]
+    plan_id: str
+    spot_id: int
+
+
+
+# メモリストGET時
+class MemoListResGet(BaseModel):
+    plan_id: str
+    spot_id: int
+    memo_id: int
+    text: str = Field(max_length=100)
+    marked: Literal['White', 'Red']
 
     class Config:
         orm_mode = True
+
+
+# メモ作成
+class MemoReqPost(BaseModel):
+    password: Optional[str]
+    plan_id: str
+    spot_id: int
+    text: str = Field(max_length=100)
+    marked: Literal['White', 'Red']
+
+
+# メモ削除
+class MemoReqDelete(BaseModel):
+    password: Optional[str]
+    plan_id: str
+    spot_id: int
+    memo_id: int
