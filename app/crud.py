@@ -18,6 +18,10 @@ def get_hash(text: str):
 # パスワード認証
 def auth_user(db: Session, plan_id: str, password: str):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).first()
+    # id指定違いの例外
+    if plan is None:
+        return None
+    # 照合
     hash_key = get_hash(password)
     if plan.verify_key == hash_key:
         return True
@@ -130,6 +134,11 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
         isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
     else:
         return False
+
+    # メモを追加するスポットのplan_idが正しいことを確認
+    db_plan_id = db.query(models.Spot).filter(models.Spot.spot_id==int(memo.spot_id)).first().plan_id
+    if memo.plan_id != db_plan_id:
+        return None
 
     # 認証成功でデータベースに追加
     if isAuth:
