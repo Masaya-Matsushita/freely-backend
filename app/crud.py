@@ -40,23 +40,22 @@ def get_memo_test(db: Session):
 
 
 # プラン取得
-# TODO: planIdの値が誤っているとき、500エラーが返る -> undefinedを返すのが綺麗？
 def get_plan(db: Session, plan_id: str):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).first()
-    # TODO: list()変換無しで大丈夫？
-    return [{
-        'plan_name': plan.plan_name,
-        'start_date': plan.start_date,
-        'end_date': plan.end_date,
-    }]
+    if plan:
+        return [{
+            'plan_name': plan.plan_name,
+            'start_date': plan.start_date,
+            'end_date': plan.end_date,
+        }]
+    else:
+        return None
 
 
 # スポット取得
-# TODO: spotIdの値が誤っているとき、500エラーが返る -> undefinedを返すのが綺麗？
 def get_spot(db: Session, plan_id: str, spot_id: str):
     spot = db.query(models.Spot).filter(models.Spot.spot_id==int(spot_id)).first()
     if spot.plan_id == plan_id:
-        # TODO: list()変換無しで大丈夫？
         return [{
             'spot_name': spot.spot_name,
             'icon': spot.icon,
