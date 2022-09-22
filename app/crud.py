@@ -78,14 +78,11 @@ def get_spot_list(db: Session, plan_id: str):
 # メモ一覧取得
 def get_memo_list(db: Session, plan_id: str, spot_id: str):
     memo_list = db.query(models.Memo).filter(models.Memo.spot_id==int(spot_id)).all()
-    # 空のとき
-    if memo_list and len(memo_list) == 0:
-        return memo_list
-    # plan_idが正しいとき
-    elif memo_list and memo_list[0].plan_id == plan_id:
+    # # plan_idが正しいとき
+    if memo_list and memo_list[0].plan_id == plan_id:
         return memo_list
     else:
-        return None
+        return []
 
 
 # プラン登録
@@ -142,8 +139,8 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
         return False
 
     # 「メモを追加するスポット」のplan_idが異なるとき
-    db_plan_id = db.query(models.Spot).filter(models.Spot.spot_id==int(memo.spot_id)).first().plan_id
-    if memo.plan_id != db_plan_id:
+    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==memo.spot_id).first()
+    if not db_spot or memo.plan_id != db_spot.plan_id:
         return None
 
     # データを追加
@@ -195,7 +192,7 @@ def update_spot(db: Session, spot: schemas.SpotReqPutBody):
 
     # plan_idが異なるとき
     db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
-    if db_spot.plan_id != spot.plan_id:
+    if not db_spot or db_spot.plan_id != spot.plan_id:
         return None
 
     # データを更新
@@ -221,11 +218,10 @@ def update_priority(db: Session, spot: schemas.SpotReqPutPriority):
 
     # plan_idが異なるとき
     db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
-    if db_spot.plan_id != spot.plan_id:
+    if not db_spot or db_spot.plan_id != spot.plan_id:
         return None
 
     # priority更新
-    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
     db_spot.priority = spot.priority
     db.commit()
     db.refresh(db_spot)
@@ -246,7 +242,7 @@ def delete_spot(db: Session, spot: schemas.SpotReqDelete):
 
     # plan_idが異なるとき
     db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id)
-    if db_spot.plan_id != spot.plan_id:
+    if not db_spot.first() or db_spot.first().plan_id != spot.plan_id:
         return None
 
     # spotを削除
@@ -269,7 +265,7 @@ def delete_memo(db: Session, memo: schemas.MemoReqDelete):
 
     # plan_idが異なるとき
     db_memo = db.query(models.Memo).filter(models.Memo.memo_id==memo.memo_id)
-    if db_memo.plan_id != memo.plan_id:
+    if not db_memo.first() or db_memo.first().plan_id != memo.plan_id:
         return None
 
     # spotを削除
