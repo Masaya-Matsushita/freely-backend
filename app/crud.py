@@ -137,14 +137,14 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
     else:
         return False
 
-    # 「メモを追加するスポット」のplan_idが正しいことを確認
-    db_plan_id = db.query(models.Spot).filter(models.Spot.spot_id==int(memo.spot_id)).first().plan_id
-    if memo.plan_id != db_plan_id:
-        return None
-
     # 認証失敗
     if not isAuth:
         return False
+
+    # 「メモを追加するスポット」のplan_idが異なるとき
+    db_plan_id = db.query(models.Spot).filter(models.Spot.spot_id==int(memo.spot_id)).first().plan_id
+    if memo.plan_id != db_plan_id:
+        return None
 
     # データを追加
     db_memo = models.Memo(
@@ -240,12 +240,19 @@ def delete_spot(db: Session, spot: schemas.SpotReqDelete):
     else:
         return False
 
-    # 認証成功でデータを削除
-    if isAuth:
-        db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).delete()
-        db.commit()
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # plan_idが異なるとき
+    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id)
+    if db_spot.plan_id != spot.plan_id:
+        return None
+
+    # spotを削除
+    db_spot.delete()
+    db.commit()
+    return True
 
 
 # メモ削除
@@ -256,9 +263,16 @@ def delete_memo(db: Session, memo: schemas.MemoReqDelete):
     else:
         return False
 
-    # 認証成功でデータを削除
-    if isAuth:
-        db.query(models.Memo).filter(models.Memo.memo_id==memo.memo_id).delete()
-        db.commit()
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # plan_idが異なるとき
+    db_memo = db.query(models.Memo).filter(models.Memo.memo_id==memo.memo_id)
+    if db_memo.plan_id != memo.plan_id:
+        return None
+
+    # spotを削除
+    db_memo.delete()
+    db.commit()
+    return True

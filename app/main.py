@@ -120,9 +120,13 @@ def update_priority(spot: schemas.SpotReqPutPriority, db: Session = Depends(get_
 @app.delete("/spot", response_model=bool)
 def delete_spot(spot: schemas.SpotReqDelete, db: Session = Depends(get_db)):
     res_spot = crud.delete_spot(db=db, spot=spot)
+    if res_spot is None:
+        raise_404_exception('Plan')
     return res_spot
 
 @app.delete("/memo", response_model=bool)
 def delete_memo(memo: schemas.MemoReqDelete, db: Session = Depends(get_db)):
     res_memo = crud.delete_memo(db=db, memo=memo)
+    if res_memo is None:
+        raise_404_exception('Plan')
     return res_memo
