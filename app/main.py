@@ -97,16 +97,22 @@ def create_memo(memo: schemas.MemoReqPost, db: Session = Depends(get_db)):
 @app.put("/plan", response_model=bool)
 def update_plan(plan: schemas.PlanReqPut, db: Session = Depends(get_db)):
     res_plan = crud.update_plan(db=db, plan=plan)
+    if res_plan is None:
+        raise_404_exception('Plan')
     return res_plan
 
 @app.put("/spot", response_model=bool)
 def update_spot(spot: schemas.SpotReqPutBody, db: Session = Depends(get_db)):
     res_spot = crud.update_spot(db=db, spot=spot)
+    if res_spot is None:
+        raise_404_exception('Plan')
     return res_spot
 
 @app.put("/priority", response_model=bool)
 def update_priority(spot: schemas.SpotReqPutPriority, db: Session = Depends(get_db)):
     res_priority = crud.update_priority(db=db, spot=spot)
+    if res_priority is None:
+        raise_404_exception('Plan')
     return res_priority
 
 

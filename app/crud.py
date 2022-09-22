@@ -111,20 +111,22 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
     else:
         return False
 
-    # 認証成功でデータベースに追加
-    if isAuth:
-        db_spot = models.Spot(
-            plan_id = spot.plan_id,
-            spot_name = spot.spot_name,
-            image = spot.image,
-            icon = spot.icon,
-            priority = False,
-        )
-        db.add(db_spot)
-        db.commit()
-        db.refresh(db_spot)
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # データを追加
+    db_spot = models.Spot(
+        plan_id = spot.plan_id,
+        spot_name = spot.spot_name,
+        image = spot.image,
+        icon = spot.icon,
+        priority = False,
+    )
+    db.add(db_spot)
+    db.commit()
+    db.refresh(db_spot)
+    return True
 
 
 # メモ登録
@@ -135,24 +137,26 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
     else:
         return False
 
-    # メモを追加するスポットのplan_idが正しいことを確認
+    # 「メモを追加するスポット」のplan_idが正しいことを確認
     db_plan_id = db.query(models.Spot).filter(models.Spot.spot_id==int(memo.spot_id)).first().plan_id
     if memo.plan_id != db_plan_id:
         return None
 
-    # 認証成功でデータベースに追加
-    if isAuth:
-        db_memo = models.Memo(
-            plan_id = memo.plan_id,
-            spot_id = memo.spot_id,
-            text = memo.text,
-            marked = memo.marked,
-        )
-        db.add(db_memo)
-        db.commit()
-        db.refresh(db_memo)
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # データを追加
+    db_memo = models.Memo(
+        plan_id = memo.plan_id,
+        spot_id = memo.spot_id,
+        text = memo.text,
+        marked = memo.marked,
+    )
+    db.add(db_memo)
+    db.commit()
+    db.refresh(db_memo)
+    return True
 
 
 # プラン更新
@@ -163,16 +167,18 @@ def update_plan(db: Session, plan: schemas.PlanReqPut):
     else:
         return False
 
-    # 認証成功でデータを更新
-    if isAuth:
-        db_plan = db.query(models.Plan).filter(models.Plan.plan_id==plan.plan_id).first()
-        db_plan.plan_name = plan.plan_name
-        db_plan.start_date = plan.start_date
-        db_plan.end_date = plan.end_date
-        db.commit()
-        db.refresh(db_plan)
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # データを更新
+    db_plan = db.query(models.Plan).filter(models.Plan.plan_id==plan.plan_id).first()
+    db_plan.plan_name = plan.plan_name
+    db_plan.start_date = plan.start_date
+    db_plan.end_date = plan.end_date
+    db.commit()
+    db.refresh(db_plan)
+    return True
 
 
 # スポット更新
@@ -183,16 +189,22 @@ def update_spot(db: Session, spot: schemas.SpotReqPutBody):
     else:
         return False
 
-    # 認証成功でデータを更新
-    if isAuth:
-        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
-        db_spot.spot_name = spot.spot_name
-        db_spot.icon = spot.icon
-        db_spot.image = spot.image
-        db.commit()
-        db.refresh(db_spot)
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # plan_idが異なるとき
+    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+    if db_spot.plan_id != spot.plan_id:
+        return None
+
+    # データを更新
+    db_spot.spot_name = spot.spot_name
+    db_spot.icon = spot.icon
+    db_spot.image = spot.image
+    db.commit()
+    db.refresh(db_spot)
+    return True
 
 
 # priority更新
@@ -203,14 +215,21 @@ def update_priority(db: Session, spot: schemas.SpotReqPutPriority):
     else:
         return False
 
-    # 認証成功でpriority更新
-    if isAuth:
-        db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
-        db_spot.priority = spot.priority
-        db.commit()
-        db.refresh(db_spot)
-        return True
-    return False
+    # 認証失敗
+    if not isAuth:
+        return False
+
+    # plan_idが異なるとき
+    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+    if db_spot.plan_id != spot.plan_id:
+        return None
+
+    # priority更新
+    db_spot = db.query(models.Spot).filter(models.Spot.spot_id==spot.spot_id).first()
+    db_spot.priority = spot.priority
+    db.commit()
+    db.refresh(db_spot)
+    return True
 
 
 # スポット削除
