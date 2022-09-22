@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from . import crud, models, schemas
@@ -42,16 +42,22 @@ def get_plan(plan_id: str = 'default', db: Session = Depends(get_db)):
 @app.get("/spot", response_model=List[schemas.SpotResGet])
 def get_spot(plan_id: str = 'default', spot_id: str = '0', db: Session = Depends(get_db)):
     res_spot = crud.get_spot(db=db, plan_id=plan_id, spot_id=spot_id)
+    if res_spot is None:
+        raise HTTPException(status_code=404, detail="Spot not found")
     return res_spot
 
 @app.get("/spot-list", response_model=List[schemas.SpotListResGet])
 def get_spot_list(plan_id: str = 'default', db: Session = Depends(get_db)):
     res_spot_list = crud.get_spot_list(db=db, plan_id=plan_id)
+    if res_spot_list is None:
+        raise HTTPException(status_code=404, detail="Spot not found")
     return res_spot_list
 
-@app.get("/memo-list", response_model=Union[List[schemas.MemoListResGet], bool])
+@app.get("/memo-list", response_model=List[schemas.MemoListResGet])
 def get_memo_list(plan_id: str = 'default', spot_id: str = '0', db: Session = Depends(get_db)):
     res_memo = crud.get_memo_list(db=db, plan_id=plan_id, spot_id=spot_id)
+    if res_memo is None:
+        raise HTTPException(status_code=404, detail="Memo not found")
     return res_memo
 
 

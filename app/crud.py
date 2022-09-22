@@ -55,12 +55,15 @@ def get_plan(db: Session, plan_id: str):
 # スポット取得
 def get_spot(db: Session, plan_id: str, spot_id: str):
     spot = db.query(models.Spot).filter(models.Spot.spot_id==int(spot_id)).first()
-    if spot.plan_id == plan_id:
+    # plan_idが正しいとき
+    if spot and spot.plan_id == plan_id:
         return [{
             'spot_name': spot.spot_name,
             'icon': spot.icon,
             'image': spot.image
         }]
+    else:
+        return None
 
 
 # スポット一覧取得
@@ -71,11 +74,14 @@ def get_spot_list(db: Session, plan_id: str):
 # メモ一覧取得
 def get_memo_list(db: Session, plan_id: str, spot_id: str):
     memo_list = db.query(models.Memo).filter(models.Memo.spot_id==int(spot_id)).all()
-    # plan_idが正しくないリクエストを規制
-    if memo_list and memo_list[0].plan_id != plan_id:
-        return False
-    else:
+    # 空のとき
+    if memo_list and len(memo_list) == 0:
         return memo_list
+    # plan_idが正しいとき
+    elif memo_list and memo_list[0].plan_id == plan_id:
+        return memo_list
+    else:
+        return None
 
 
 # プラン登録
