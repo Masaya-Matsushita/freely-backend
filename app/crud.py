@@ -18,9 +18,11 @@ def get_hash(text: str):
 # パスワード認証
 def auth_user(db: Session, plan_id: str, password: str):
     plan = db.query(models.Plan).filter(models.Plan.plan_id==plan_id).first()
+
     # id指定違いの例外
     if plan is None:
         return None
+    
     # 照合
     hash_key = get_hash(password)
     if plan.verify_key == hash_key:
@@ -108,6 +110,10 @@ def create_spot(db: Session, spot: schemas.SpotReqPost):
     else:
         return False
 
+    # id指定違いの例外
+    if isAuth is None:
+        return None
+
     # 認証失敗
     if not isAuth:
         return False
@@ -133,6 +139,10 @@ def create_memo(db: Session, memo: schemas.MemoReqPost):
         isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
     else:
         return False
+
+    # id指定違いの例外
+    if isAuth is None:
+        return None
 
     # 認証失敗
     if not isAuth:
@@ -164,6 +174,10 @@ def update_plan(db: Session, plan: schemas.PlanReqPut):
     else:
         return False
 
+    # id指定違いの例外
+    if isAuth is None:
+        return None
+
     # 認証失敗
     if not isAuth:
         return False
@@ -185,6 +199,10 @@ def update_spot(db: Session, spot: schemas.SpotReqPutBody):
         isAuth = auth_user(db=db, plan_id=spot.plan_id, password=spot.password)
     else:
         return False
+
+    # id指定違いの例外
+    if isAuth is None:
+        return None
 
     # 認証失敗
     if not isAuth:
@@ -212,6 +230,10 @@ def update_priority(db: Session, spot: schemas.SpotReqPutPriority):
     else:
         return False
 
+    # id指定違いの例外
+    if isAuth is None:
+        return None
+
     # 認証失敗
     if not isAuth:
         return False
@@ -236,6 +258,10 @@ def delete_spot(db: Session, spot: schemas.SpotReqDelete):
     else:
         return False
 
+    # id指定違いの例外
+    if isAuth is None:
+        return None
+
     # 認証失敗
     if not isAuth:
         return False
@@ -258,6 +284,10 @@ def delete_memo(db: Session, memo: schemas.MemoReqDelete):
         isAuth = auth_user(db=db, plan_id=memo.plan_id, password=memo.password)
     else:
         return False
+
+    # id指定違いの例外
+    if isAuth is None:
+        return None
 
     # 認証失敗
     if not isAuth:
