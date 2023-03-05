@@ -1,9 +1,7 @@
 ### Freely のバックエンド
 
 >**Warning** <br />
->Heroku有料化のため、Firebaseへ移行しました。(2022/11/28~) <br />
->[現在のアプリはこちらを参照ください](https://github.com/Masaya-Matsushita/freely-frontend)
-
+>Heroku有料化のため、サービスを終了しました。(2022/11/28~) <br />
 
 ### 🏗 アプリ構成(~2022/11/28)
 <img src="https://user-images.githubusercontent.com/97160510/197398576-e0150a21-61ca-4b86-a705-9d64e55d375c.png" width="600px" />
